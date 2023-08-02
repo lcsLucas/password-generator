@@ -1,0 +1,22 @@
+version: "3.3"
+services:
+  password:
+    build:
+      context: .
+      dockerfile: "./Dockerfile"
+    working_dir: /go/src/${ENV_SRC}
+    container_name: password-go
+    stdin_open: true
+    tty: true
+    restart: on-failure
+    env_file:
+      - .env
+    # environment:
+    #   - src=${ENV_SRC}
+    networks:
+      - password-network
+    volumes:
+      - ./:/go/src/${ENV_SRC}
+networks:
+  password-network:
+    driver: bridge
