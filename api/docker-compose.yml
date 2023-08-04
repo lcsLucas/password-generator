@@ -9,10 +9,10 @@ services:
     stdin_open: true
     tty: true
     restart: on-failure
+    ports:
+      - "3000:3000"
     env_file:
       - .env
-    # environment:
-    #   - src=${ENV_SRC}
     networks:
       - password-network
     volumes:
