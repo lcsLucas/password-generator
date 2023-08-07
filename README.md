@@ -1,4 +1,4 @@
-# Password Generator Library in Go
+# Password Generator Library in Go with React
 
 A simple and flexible password generator library written in Go. This library allows you to generate random passwords with varying complexity levels based on your requirements.
 

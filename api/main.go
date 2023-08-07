@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
 
 	fiber "github.com/gofiber/fiber/v2"
@@ -9,10 +11,14 @@ import (
 
 func main() {
 
+	portArg := flag.Int("port", 3000, "Define application port")
+
+	flag.Parse()
+
 	app := fiber.New()
 
 	app.Get("/api", func(c *fiber.Ctx) error {
-		return c.SendString("Everything is OK ✋")
+		return c.SendString("Everything OK ✋")
 	})
 
 	app.Get("/api/generate", func(c *fiber.Ctx) error {
@@ -21,10 +27,10 @@ func main() {
 
 		qLength := c.QueryInt("length", 0)
 
-		password.UseLowercaseLetters = c.QueryBool("lowercaseLetters")
-		password.UseUppercaseLetter = c.QueryBool("uppercaseLetter")
-		password.UseDigits = c.QueryBool("digits")
-		password.UseSymbols = c.QueryBool("symbols")
+		password.UseLowercaseLetters = c.QueryBool("lowercaseLetters", true)
+		password.UseUppercaseLetter = c.QueryBool("uppercaseLetter", true)
+		password.UseDigits = c.QueryBool("digits", true)
+		password.UseSymbols = c.QueryBool("symbols", true)
 
 		pass, err := password.Generate(qLength)
 
@@ -41,5 +47,5 @@ func main() {
 		})
 	})
 
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(fmt.Sprintf(":%d", *portArg)))
 }
