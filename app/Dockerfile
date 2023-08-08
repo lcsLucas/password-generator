@@ -22,12 +22,12 @@ RUN apk --update-cache add \
 
 RUN npm install
 
-#ENTRYPOINT [ "npm", "install" ]
-
 FROM alpine-npm
 
 WORKDIR /var/www/
 
 USER ${user}
+
+ENTRYPOINT [ "npm", "run", "dev", "--host" ]
 
 STOPSIGNAL SIGQUIT

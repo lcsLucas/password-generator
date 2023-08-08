@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: "./app.Dockerfile"
+      dockerfile: "./app/Dockerfile"
     working_dir: /var/www/
     container_name: password-app    
     stdin_open: true
@@ -18,7 +18,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: "./api.Dockerfile"
+      dockerfile: "./api/Dockerfile"
     working_dir: /go/src/${ENV_SRC}
     container_name: password-api
     stdin_open: true
@@ -27,7 +27,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - ./api/.env
+      - ./.env
     networks:
       - password-network
     volumes:
