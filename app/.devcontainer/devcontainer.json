@@ -25,7 +25,10 @@
 			"extensions": [
 				"ms-azuretools.vscode-docker",
 				"streetsidesoftware.code-spell-checker",
-				"streetsidesoftware.code-spell-checker-portuguese-brazilian"
+				"streetsidesoftware.code-spell-checker-portuguese-brazilian",
+				"dbaeumer.vscode-eslint",
+				"esbenp.prettier-vscode",
+				"shardulm94.trailing-spaces"
 			]
 		}
 	}
