@@ -1,7 +1,7 @@
 import InternalConfig from "./Config";
 import ConfigStyled from "./Config.Styled";
-import Option from "./Option";
-import Slider from "./Slider";
+import Option from "./option";
+import Slider from "./slider";
 
 type TypeInternalConfig = typeof InternalConfig;
 

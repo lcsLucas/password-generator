@@ -1,6 +1,6 @@
 import App from ".";
-import Config from "../Config";
-import Display from "../Display";
+import Config from "../config";
+import Display from "../display";
 
 export default () => {
   return (

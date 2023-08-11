@@ -12,9 +12,13 @@ export default {
     font-size: 2.25rem;
     line-height: 1.75;
     padding: 0.75rem 2.25rem;
+    padding-right: 7.5rem;
     font-family: sans-serif;
     border: 1px solid #dadada;
     border-radius: 3rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   `,
   WrapperButton: styled.div`
     position: absolute;

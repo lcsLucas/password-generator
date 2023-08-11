@@ -6,7 +6,9 @@ export default {
     align-items: center;
   `,
   Label: styled.span`
+    cursor: default;
     margin-right: 0.25rem;
+    user-select: none;
   `,
   Input: styled.input``,
   Number: styled.span`

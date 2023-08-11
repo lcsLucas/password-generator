@@ -13,13 +13,14 @@ type PropsOption = React.DetailedHTMLProps<
 > & {
   text: string;
   value?: string | ReadonlyArray<string> | number | undefined;
+  checked?: boolean | undefined;
 };
 
 export default React.forwardRef<HTMLLabelElement, PropsOption>(
-  ({ value, text, ...props }, ref) => {
+  ({ value, text, checked, ...props }, ref) => {
     return (
       <Option.Styled.Container {...props} ref={ref}>
-        <Option.Styled.Input type="checkbox" value={value} />
+        <Option.Styled.Input type="checkbox" value={value} checked={checked} />
         <Option.Styled.Span>{text}</Option.Styled.Span>
       </Option.Styled.Container>
     );
