@@ -32,5 +32,9 @@ export default {
     font-size: 1.9rem;
     padding: 0 0.5rem;
     color: #777;
+
+    * {
+      pointer-events: none;
+    }
   `,
 };

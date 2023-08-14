@@ -8,23 +8,29 @@ type DisplayProps = React.DetailedHTMLProps<
   HTMLDivElement
 > & {};
 
-export default React.forwardRef<HTMLDivElement, DisplayProps>((props, ref) => {
-  const { config } = useGenerate();
+export default React.memo(
+  React.forwardRef<HTMLDivElement, DisplayProps>((props, ref) => {
+    const { password, config, handleChangeLength } = useGenerate();
 
-  return (
-    <Display.Styled.Container {...props} ref={ref}>
-      <Display.Styled.Input
-        type="text"
-        value={new Array(config.length).fill(0).join("")}
-      />
-      <Display.Styled.WrapperButton>
-        <Display.Styled.Button title="Copy">
-          <Icons.Copy />
-        </Display.Styled.Button>
-        <Display.Styled.Button title="Refresh">
-          <Icons.Refresh />
-        </Display.Styled.Button>
-      </Display.Styled.WrapperButton>
-    </Display.Styled.Container>
-  );
-});
+    const handleCopy = (event: React.MouseEvent<HTMLButtonElement>) => {
+      console.log(event);
+    };
+
+    return (
+      <Display.Styled.Container {...props} ref={ref}>
+        <Display.Styled.Input type="text" value={password.value} />
+        <Display.Styled.WrapperButton>
+          <Display.Styled.Button title="Copy" onClick={handleCopy}>
+            <Icons.Copy />
+          </Display.Styled.Button>
+          <Display.Styled.Button
+            title="Refresh"
+            onClick={() => handleChangeLength!(config.length.value)}
+          >
+            <Icons.Refresh />
+          </Display.Styled.Button>
+        </Display.Styled.WrapperButton>
+      </Display.Styled.Container>
+    );
+  }),
+);

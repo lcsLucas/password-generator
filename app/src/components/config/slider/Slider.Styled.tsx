@@ -4,6 +4,7 @@ export default {
   Container: styled.div`
     display: inline-flex;
     align-items: center;
+    margin-right: 1.5rem;
   `,
   Label: styled.span`
     cursor: default;
