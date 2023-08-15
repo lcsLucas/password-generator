@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: "./app/Dockerfile"
+      dockerfile: "./Dockerfile"
     working_dir: /var/www/
     container_name: password-app    
     stdin_open: true
@@ -15,23 +15,6 @@ services:
       - password-network
     volumes:
       - ./app:/var/www/
-  api:
-    build:
-      context: .
-      dockerfile: "./api/Dockerfile"
-    working_dir: /go/src/${ENV_SRC}
-    container_name: password-api
-    stdin_open: true
-    tty: true
-    restart: on-failure
-    ports:
-      - "3000:3000"
-    env_file:
-      - ./.env
-    networks:
-      - password-network
-    volumes:
-      - ./api:/go/src/${ENV_SRC}
 networks:
   password-network:
     driver: bridge

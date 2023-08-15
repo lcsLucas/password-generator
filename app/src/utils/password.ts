@@ -1,4 +1,8 @@
-import { ConfigCheckType, KeyStrong } from "@/context/Generate/GenerateContext";
+import {
+  ConfigCheckType,
+  KeyStrong,
+  PasswordType,
+} from "@/context/Generate/GenerateContext";
 import { initialOptions } from "@/utils/options";
 
 const configDefault: { [key: string]: string } = {
@@ -11,7 +15,7 @@ const configDefault: { [key: string]: string } = {
 export const generate: (
   length: number,
   config: typeof initialOptions,
-) => string = (length, config) => {
+) => PasswordType = (length, config) => {
   let tempChars = "";
   let resultPass = "";
 
@@ -27,44 +31,65 @@ export const generate: (
       }
     });
 
+    if (tempChars.length <= 0) tempChars = configDefault["lower"];
+
     for (let i = 0; i < length; i++) {
       const rand = Math.floor(Math.random() * tempChars.length);
       resultPass += tempChars[rand];
     }
   }
 
-  return resultPass;
+  return {
+    value: resultPass,
+    strong: check(resultPass),
+  };
 };
 
 export const check: (password: string) => KeyStrong = (password: string) => {
   const length = password.length;
 
-  if (length < 8) {
+  if (length < 6) {
     return "VeryLow";
+  }
+
+  if (length < 8) {
+    return "Low";
+  }
+
+  if (length < 9) {
+    return "Moderate";
   }
 
   const containsLower = /[a-z]/.test(password);
   const containsUpper = /[A-Z]/.test(password);
   const containsDigit = /[0-9]/.test(password);
-  const containsSymbol = /[^a-zA-Z0-9]/.test(password);
+  const containsSymbol = /[!@#$%^&*()_+[\]{}|;:,.<>?/=-]/.test(password);
 
-  // Additional criteria
-  const hasMixedCase = containsLower && containsUpper;
-  const hasSpecialCharacter = /[!@#$%^&*()_+[\]{}|;:,.<>?/=-]/.test(password);
+  let ranking = 0;
 
-  if (hasMixedCase && hasSpecialCharacter && length >= 12) {
+  if (containsLower) {
+    ranking += 1;
+  }
+
+  if (containsUpper) {
+    ranking += 1;
+  }
+
+  if (containsDigit) {
+    ranking += 1;
+  }
+
+  if (containsSymbol) {
+    ranking += 1;
+  }
+
+  if (ranking >= 4 || length >= 12) {
     return "VeryHigh";
-  } else if (hasMixedCase && hasSpecialCharacter) {
+  } else if (ranking === 3) {
     return "High";
-  } else if (
-    (hasMixedCase && containsDigit) ||
-    (hasMixedCase && containsSymbol) ||
-    (containsDigit && containsSymbol)
-  ) {
+  } else if (ranking === 2) {
     return "Moderate";
-  } else if (hasMixedCase || containsDigit || containsSymbol) {
-    return "Low";
   } else {
-    return "VeryLow";
+    return "Low";
   }
 };

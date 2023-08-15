@@ -33,6 +33,7 @@ type GenerateContextType = {
   password: PasswordType;
   config: typeof initialOptions;
   handleChangeLength?: (length: number) => void;
+  handleChangePassword?: (value: string) => void;
   handleChangeOption?: (c: keyof typeof initialOptions, value: boolean) => void;
 };
 
@@ -47,17 +48,22 @@ const GenerateContext = React.createContext<GenerateContextType>({
 });
 
 export const GenerateProvider = ({ children }: GenerateProps) => {
+  const [password, setPassword] = React.useState<PasswordType>(() => {
+    return generate(initialOptions.length.value, initialOptions);
+  });
+
   const [config, setConfig] =
     React.useState<typeof initialOptions>(initialOptions);
 
-  const _passGenerate = generate(config.length.value, config);
-
-  const password: PasswordType = {
-    value: _passGenerate,
-    strong: check(_passGenerate),
+  const handleChangePassword = (value: string) => {
+    setPassword({
+      value,
+      strong: check(value),
+    });
+    handleChangeLength(value.length, true);
   };
 
-  const handleChangeLength = (length: number) => {
+  const handleChangeLength = (length: number, manual: boolean = false) => {
     setConfig(v => ({
       ...v,
       length: {
@@ -65,13 +71,17 @@ export const GenerateProvider = ({ children }: GenerateProps) => {
         value: length,
       },
     }));
+
+    if (!manual) {
+      setPassword(generate(length, config));
+    }
   };
 
   const handleChangeOption = (
     c: keyof typeof initialOptions,
     value: boolean,
   ) => {
-    const cf = {
+    const vN = {
       ...config,
       [c]: {
         ...config[c],
@@ -79,7 +89,22 @@ export const GenerateProvider = ({ children }: GenerateProps) => {
       },
     };
 
-    setConfig({ ...cf });
+    let checkAny: boolean = false;
+
+    Object.keys(vN).forEach((k: string) => {
+      if (
+        k !== "length" &&
+        (vN[k as keyof typeof initialOptions] as unknown as ConfigCheckType)
+          .checked
+      ) {
+        checkAny = true;
+      }
+    });
+
+    if (!checkAny) vN.lower.checked = true;
+
+    setPassword(generate(vN.length.value, vN));
+    setConfig(vN);
   };
 
   return (
@@ -88,6 +113,7 @@ export const GenerateProvider = ({ children }: GenerateProps) => {
         password,
         config,
         handleChangeLength,
+        handleChangePassword,
         handleChangeOption,
       }}
     >
