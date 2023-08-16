@@ -14,7 +14,7 @@ services:
     networks:
       - password-network
     volumes:
-      - ./app:/var/www/
+      - ./:/var/www/
 networks:
   password-network:
     driver: bridge
